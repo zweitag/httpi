@@ -1,6 +1,7 @@
 require "httpi/adapter/httpclient"
 require "httpi/adapter/curb"
 require "httpi/adapter/net_http"
+require "httpi/adapter/httparty"
 
 module HTTPI
 
@@ -28,7 +29,7 @@ module HTTPI
 
     # Returns a memoized +Hash+ of adapters.
     def self.adapters
-      @adapters ||= { :httpclient => HTTPClient, :curb => Curb, :net_http => NetHTTP }
+      @adapters ||= { :httpclient => HTTPClient, :curb => Curb, :net_http => NetHTTP, :httparty => HTTParty }
     end
 
     # Returns an +adapter+. Raises an +ArgumentError+ unless the +adapter+ exists.
