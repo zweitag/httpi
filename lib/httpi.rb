@@ -185,8 +185,9 @@ module HTTPI
       adapter ||= Adapter.use
       adapter, adapter_class = Adapter.find adapter
       
+      @instances ||= {}
       HTTPI.log "HTTPI executes HTTP #{method.to_s.upcase} using the #{adapter} adapter"
-      yield adapter_class.new(request)
+      yield @instances[adapter_class] ||= adapter_class.new(request)
     end
 
   end
