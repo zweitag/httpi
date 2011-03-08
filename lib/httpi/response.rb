@@ -27,6 +27,12 @@ module HTTPI
       !SuccessfulResponseCodes.include? code.to_i
     end
 
+    # Returns whether the HTTP response is a multipart response.
+    def multipart?
+      !!(headers["Content-Type"] =~ /^multipart/i)
+    end
+
+    # Returns any DIME attachments.
     def attachments
       decode_body unless @body
       @attachments ||= []
@@ -49,7 +55,6 @@ module HTTPI
       @body = dime_response? ? decoded_dime_body(body) : body
     end
 
-
     # Returns whether the response is gzipped.
     def gzipped_response?
       headers["Content-Encoding"] == "gzip" || raw_body[0..1] == "\x1f\x8b"
@@ -63,9 +68,10 @@ module HTTPI
     # Returns the gzip decoded response body.
     def decoded_gzip_body
       gzip = Zlib::GzipReader.new StringIO.new(raw_body)
+      raise ArgumentError.new "couldn't create gzip reader" unless gzip
       gzip.read
     ensure
-      gzip.close
+      gzip.close if gzip
     end
 
     # Returns the DIME decoded response body.

@@ -66,7 +66,7 @@ module HTTPI
 
       def setup_client(request)
         basic_setup request
-        setup_http_auth request if request.auth.http?
+        setup_auth request if request.auth.http? || request.auth.ntlm?
         setup_ssl_auth request.auth.ssl if request.auth.ssl?
       end
 
@@ -76,7 +76,7 @@ module HTTPI
         client.receive_timeout = request.read_timeout if request.read_timeout
       end
 
-      def setup_http_auth(request)
+      def setup_auth(request)
         client.set_auth request.url, *request.auth.credentials
       end
 

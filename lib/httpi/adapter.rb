@@ -10,6 +10,7 @@ module HTTPI
   #
   # * httpclient
   # * curb
+  # * net/http
   module Adapter
 
     # The default adapter.
@@ -32,9 +33,9 @@ module HTTPI
     # Returns a memoized +Hash+ of adapters.
     def self.adapters
       @adapters ||= {
-        :httpclient => { :class => HTTPClient, :require => "httpclient" },
-        :curb       => { :class => Curb,       :require => "curb" },
-        :net_http   => { :class => NetHTTP,    :require => "net/https" }
+        :httpclient => { :class => HTTPClient, :require => ["httpclient"] },
+        :curb       => { :class => Curb,       :require => ["curb"] },
+        :net_http   => { :class => NetHTTP,    :require => ["net/https", "net/ntlm_http"] }
       }
     end
 
@@ -53,12 +54,12 @@ module HTTPI
 
     # Tries to load and return the given +adapter+ name and class and falls back to the +FALLBACK+ adapter.
     def self.load_adapter(adapter)
-      require adapters[adapter][:require]
+      adapters[adapter][:require].each { |dependency| require dependency }
       [adapter, adapters[adapter][:class]]
     rescue LoadError
-      HTTPI.log "HTTPI tried to use the #{adapter} adapter, but was unable to find the library in the LOAD_PATH.",
+      HTTPI.logger.warn "HTTPI tried to use the #{adapter} adapter, but was unable to find the library in the LOAD_PATH.",
         "Falling back to using the #{FALLBACK} adapter now."
-      
+
       require adapters[FALLBACK][:require]
       [FALLBACK, adapters[FALLBACK][:class]]
     end
