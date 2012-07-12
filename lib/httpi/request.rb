@@ -93,10 +93,6 @@ module HTTPI
       ATTRIBUTES.each { |key| send("#{key}=", args[key]) if args[key] }
     end
 
-    def set_cookies(http_response)
-      # don't do anything with cookies for ntlm
-    end
-
   private
 
     # Stores the cookies from past requests.
