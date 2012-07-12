@@ -13,7 +13,7 @@ module HTTPI
 
       # Returns whether SSL configuration is present.
       def present?
-        (verify_mode == :none) || (cert && cert_key)
+        (verify_mode == :none) || (cert && cert_key) || ca_cert_file
       rescue TypeError, Errno::ENOENT
         false
       end
@@ -54,7 +54,7 @@ module HTTPI
 
       # Returns an <tt>OpenSSL::X509::Certificate</tt> for the +cert_file+.
       def cert
-        @cert ||= OpenSSL::X509::Certificate.new File.read(cert_file) if cert_file
+        @cert ||= (OpenSSL::X509::Certificate.new File.read(cert_file) if cert_file)
       end
 
       # Sets the +OpenSSL+ certificate.
@@ -70,7 +70,7 @@ module HTTPI
 
       # Returns an <tt>OpenSSL::PKey::RSA</tt> for the +cert_key_file+.
       def cert_key
-        @cert_key ||= OpenSSL::PKey::RSA.new(File.read(cert_key_file), cert_key_password) if cert_key_file
+        @cert_key ||= (OpenSSL::PKey::RSA.new(File.read(cert_key_file), cert_key_password) if cert_key_file)
       end
 
       # Sets the +OpenSSL+ certificate key.

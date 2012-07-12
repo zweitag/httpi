@@ -63,8 +63,9 @@ module HTTPI
       attr_writer :client
 
       def new_client(request)
-        proxy = request.proxy || URI("")
-        Net::HTTP::Proxy(proxy.host, proxy.port).new request.url.host, request.url.port
+        proxy_url = request.proxy || URI("")
+        proxy = Net::HTTP::Proxy(proxy_url.host, proxy_url.port, proxy_url.user, proxy_url.password)
+        proxy.new request.url.host, request.url.port
       end
 
       def do_request(type, request)
@@ -99,9 +100,7 @@ module HTTPI
         end
 
         request_client = request_class.new request.url.request_uri, request.headers
-
         request_client.basic_auth *request.auth.credentials if request.auth.basic?
-        request_client.ntlm_auth *request.auth.credentials if request.auth.ntlm?
 
         request_client
       end

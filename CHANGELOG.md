@@ -1,8 +1,55 @@
-## 0.9.6 (2011-06-30)
+## 1.1.1 (2012-07-01)
+
+* Fix: [#56](https://github.com/rubiii/httpi/pull/56) ensures that the "Cookie"
+  header is not set to nil.
+
+## 1.1.0 (2012-06-26)
+
+* Refactoring: Moved code that sets the cookies from the last response for the
+  next request from Savon to `HTTPI::Request#set_cookies`.
+
+## 1.0.0 (2012-06-07)
+
+* Feature: [#48](https://github.com/rubiii/httpi/pull/48) @jheiss added support
+  for HTTP Negotiate/SPNEGO authentication (curb-specific).
+
+* Fix: [#53](https://github.com/rubiii/httpi/issues/53) fixed an issue where
+  `HTTPI.log_level` did not do anything at all.
+
+## 0.9.7 (2012-04-26)
+
+* Fix: Merged [pull request 49](https://github.com/rubiii/httpi/pull/49) so that cert
+  and cert_key can be manually set.
+
+* Fix: Stop auto-detecting gzipped responses by inspecting the response body to allow
+  response compression only.
+
+## 0.9.6 (2012-02-23)
 
 * Added a `httpi-ntlm` file for convenience requires.
 
+* Feature: Merged [pull request 46](https://github.com/rubiii/httpi/pull/46) to support
+  request body Hashes. Fixes [issue 45](https://github.com/rubiii/httpi/issues/45).
+
+    ``` ruby
+    request.body = { :foo => :bar, :baz => :foo }  # => "foo=bar&baz=foo"
+    ```
+
+* Feature: Merged [pull request 43](https://github.com/rubiii/httpi/pull/43) to allow
+  proxy authentication with net/http.
+
+* Feature: Merged [pull request 42](https://github.com/rubiii/httpi/pull/42) which sets up
+  HTTP basic authentication if user information is present in the URL.
+
+* Fix: Merged [pull request 44](https://github.com/rubiii/httpi/pull/44) to fix
+  [issue 26](https://github.com/rubiii/httpi/issues/26) and probably also
+  [issue 32](https://github.com/rubiii/httpi/issues/32) - SSL client authentication.
+
 ## 0.9.5 (2011-06-30)
+
+* Improvement: Moved support for NTLM authentication into a separate gem.
+  Since NTLM support caused quite some problems for people who didn't even
+  need it, I decided to move it into httpi-ntlm until it's stable.
 
 * Rebirth: httpi-ntlm provides experimental support for NTLM authentication.
   Please test it and provide feedback to build a stable feature.
