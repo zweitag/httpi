@@ -4,7 +4,7 @@ $:.unshift lib unless $:.include?(lib)
 require "httpi/version"
 
 Gem::Specification.new do |s|
-  s.name        = "httpi-ntlm"
+  s.name        = "httpi"
   s.version     = HTTPI::VERSION
   s.authors     = ["Daniel Harrington", "Martin Tepper"]
   s.email       = "me@rubiii.com"
