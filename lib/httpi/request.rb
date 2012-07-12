@@ -78,6 +78,10 @@ module HTTPI
       ATTRIBUTES.each { |key| send("#{key}=", args[key]) if args[key] }
     end
 
+    def set_cookies(http_response)
+      # don't do anything with cookies for ntlm
+    end
+
   private
 
     # Expects a +url+, validates its validity and returns a +URI+ object.
